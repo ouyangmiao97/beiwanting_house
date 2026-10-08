@@ -1,4 +1,4 @@
-FROM php:5.6-apache
+FROM php:8.2-apache
 
 # 啟用 Apache Rewrite 模組（CodeIgniter 路由必要）
 RUN a2enmod rewrite
