@@ -55,7 +55,7 @@
 
         <section class="about section-wrap" id="about">
             <div class="about-photo">
-                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&amp;fit=crop&amp;w=1100&amp;q=85" alt="窗邊綠意與自然光交織的木質休憩空間" loading="lazy">
+                <img src="/images/about-living-room.jpg" alt="明亮舒適的客廳，白色沙發搭配木質地板與綠意植栽" loading="lazy">
                 <span class="photo-note">讓海風帶路，沿途都是風景。</span>
             </div>
             <div class="about-copy">
@@ -96,7 +96,7 @@
             </div>
             <div class="room-grid">
                 <article class="room-card">
-                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="柔和自然光照亮的舒適客房" loading="lazy">
+                    <img src="/images/room-gentle-dream.jpg" alt="明亮窗景旁並列兩張床的舒適客房" loading="lazy">
                     <div class="room-caption"><div><h3>溫柔入夢・舒適客房</h3><p>雙人 / 四人 / 六人</p></div><span aria-hidden="true">↗</span></div>
                 </article>
                 <article class="room-card">
@@ -119,7 +119,7 @@
                     <div><p class="eyebrow">GOOD MORNING · 早餐</p><h3>麥當勞早餐</h3><p>熟悉的好滋味，開啟悠閒的一天。</p></div>
                 </article>
                 <article class="food-card">
-                    <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="一碗熱騰騰的牛肉麵" loading="lazy">
+                    <img src="/images/longji-award.webp" alt="龍記尚品牛肉麵獲選宜蘭百大名店小吃名店的獎牌" loading="lazy">
                     <div><p class="eyebrow">LOCAL FAVORITE · 在地美味</p><h3>龍記牛肉麵</h3><p>一碗熱騰騰的麵，收藏頭城的好滋味。</p></div>
                 </article>
             </div>
