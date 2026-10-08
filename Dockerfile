@@ -1,26 +1,18 @@
-FROM php:8.2-apache
+Set-Content -Path Dockerfile -Value 'FROM php:8.2-apache
 
-# 啟用 Apache Rewrite 模組（CodeIgniter 路由必要）
+# 啟用 Apache Rewrite 模組
 RUN a2enmod rewrite
 
-# 安裝 PHP 常用套件與擴充功能
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql mysqli gd
+# 允許 .htaccess 覆蓋設定 (AllowOverride All)
+RUN sed -i '\''<Directory /var/www/html/>'\'',$s/AllowOverride None/AllowOverride All/ /etc/apache2/apache2.conf
 
-# 設定 Apache Document Root 指向 public 目錄 (適用 CI4)
-# 若你是 CI3，請將這兩行裡面的 /public 刪除
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/conf-available/*.conf
+# 安裝資料庫擴充功能
+RUN docker-php-ext-install pdo pdo_mysql mysqli
 
-# 將專案檔案複製到容器中
+# 複製專案檔案
 COPY . /var/www/html/
 
-# 設定適當的目錄權限
-RUN chown -R www-data:www-data /var/www/html
+# 設定 Document Root 為根目錄
+ENV APACHE_DOCUMENT_ROOT /var/www/html
+RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf
+RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/conf-available/*.conf'
