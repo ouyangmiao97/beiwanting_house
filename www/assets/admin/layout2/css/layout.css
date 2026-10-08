@@ -1,0 +1,9 @@
+body:not(.sidebar-top):not(.fixed-sidebar):not(.sidebar-collapsed) .sidebar:before{margin-top:0}
+.sidebar-condensed:not(.sidebar-collapsed):not(.fixed-topbar) .main-content .topbar{left:0}
+.sidebar-condensed .sidebar .sidebar-inner .nav-sidebar > li > a{text-align:center}
+.sidebar-condensed:not(.sidebar-collapsed) .sidebar .sidebar-inner .nav-sidebar > li > a span.badge{display:inline-block;float:none!important}
+.sidebar-mailbox.sidebar .sidebar-inner .nav-sidebar > li.active > a span.badge,.sidebar .sidebar-inner .nav-sidebar .badge-rounded{position:absolute;right:55px}
+.sidebar-mailbox.sidebar .sidebar-inner .nav-sidebar > li.active > a{text-align:center}
+.sidebar-collapsed .topbar .header-left .topnav{float:left;height:50px;margin:0}
+.sidebar-mailbox.sidebar .sidebar-charts{margin-bottom:10px}
+.sidebar-condensed:not(.sidebar-collapsed):not(.fixed-topbar) .main-content .topbar{left:0}

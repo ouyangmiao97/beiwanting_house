@@ -1,0 +1,10 @@
+.sidebar .badge-rounded{border:none}
+.sidebar-mailbox.sidebar .sidebar-inner .nav-sidebar > li.active > a span.badge,.sidebar .sidebar-inner .nav-sidebar .badge-rounded{position:absolute;right:6px;top:6px}
+.sidebar-mailbox.sidebar .sidebar-inner .nav-sidebar > li.active > a{text-align:center}
+.sidebar-collapsed .topbar .header-left .topnav{float:left;height:50px;margin:0}
+.sidebar-mailbox.sidebar .sidebar-inner .nav-sidebar > li.active > a i{display:block;float:none!important;font-size:14px;line-height:40px;margin:-10px auto -7px;width:40px}
+.builder .builder-toggle,.builder:before{top:30%}
+.topbar .header-left .topnav .mmenu .dropdown.mmenu-fw .dropdown-menu{left:-140px}
+.boxed section .main-content{height:100%}
+#page-builder { top: 115px; left: 0;}
+.mailbox.sidebar-top.theme-sdtl.color-default .nav-sidebar > li.nav-hover > a {  background-color: #3095AC !important;}
