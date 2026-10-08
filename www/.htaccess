@@ -1,48 +1,11 @@
-#block_blank_user_agent_start
-RewriteCond %{HTTP_USER_AGENT} ^(-|)$
-RewriteRule ^(.*)$ - [F,L]
-#block_blank_user_agent_end
-
-
-
-
-
-
-#aifilter_start
+<IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteCond %{HTTP_USER_AGENT} ^.*(mj12|bytedance|openai|Go-http-client|amazonbot|meta-external|claude|dataforseo|babbar|AliyunSecBot|scrapy.org|seranking|petalbot|HttpClient|Mediapartners-Google|perplexitybot).*$ [NC]
-RewriteRule .* - [F,L]
-#aifilter_end
-
-
-
-
-
-
-
-
-RewriteEngine on
-RewriteCond %{HTTPS} off
-RewriteCond %{HTTP_HOST} !^beiwanting\.tt(?::80)?$ [NC]
-RewriteRule ^.*$ https://%{HTTP_HOST} [R=301,L]
 RewriteBase /
-RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
-RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
-RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
-#RewriteCond $1 !^(index\.php|images|robots\.txt|$)
-RewriteCond $1 !^(index\.php|images|robots\.txt|css|design|img|js|package|dist|html|captcha|assets|uploads|image|plugins|SpryAssets|fonts|cgi\-bin)
-RewriteRule ^(.*)$ index.php/$1 [L,QSA]
 
+# 排除真實存在的檔案或資料夾
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 
-
-
-
-
-
-
-
-
-
-
-
-
+# 統一導向 index.php
+RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
