@@ -1,11 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /
-
-# 排除真實存在的檔案或資料夾
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# 統一導向 index.php
 RewriteRule ^(.*)$ index.php/$1 [L]
 </IfModule>
