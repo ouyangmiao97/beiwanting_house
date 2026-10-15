@@ -1,0 +1,792 @@
+/* ==========================================================
+   空間與房型 (/room)
+   ========================================================== */
+
+:root {
+    --rt-radius: 20px;
+    --rt-ease: cubic-bezier(.22, 1, .36, 1);
+    --rt-shadow: 0 10px 30px rgba(40, 49, 43, .08);
+    --rt-shadow-hover: 0 16px 34px rgba(36, 72, 63, .22);
+}
+
+/* framer-motion 載入前先隱藏，避免閃爍；載入失敗時 room.js 會移除 .js */
+.js [data-reveal] {
+    opacity: 0;
+}
+
+/* ---------- 頁首介紹 ---------- */
+.rt-intro {
+    width: min(860px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 72px 0 64px;
+    text-align: center;
+}
+
+.rt-intro h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(34px, 4.6vw, 52px);
+    font-weight: 500;
+    letter-spacing: .12em;
+    line-height: 1.35;
+}
+
+.rt-squiggle {
+    display: block;
+    width: 120px;
+    height: 12px;
+    margin: 14px auto 22px;
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+
+.rt-intro-lead {
+    margin: 0 0 34px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 2;
+}
+
+.rt-picker {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.rt-picker a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 14px;
+    transition: all .3s ease;
+}
+
+.rt-picker b {
+    color: var(--green);
+    font-family: Georgia, serif;
+    font-weight: 600;
+    letter-spacing: .04em;
+}
+
+.rt-picker a:hover {
+    border-color: var(--green);
+    transform: translateY(-2px);
+    box-shadow: var(--rt-shadow);
+}
+
+/* ---------- 房型列表：全寬 / 半寬交錯 ---------- */
+.rt-list {
+    width: min(1320px, calc(100% - 96px));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 56px;
+    padding-bottom: 40px;
+}
+
+/* Swiper 放在 grid / flex 內需要 min-width: 0，否則寬度會被撐開 */
+.rt-row,
+.rt-card,
+.rt-media,
+.rt-body {
+    min-width: 0;
+}
+
+.rt-row--pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px;
+}
+
+.rt-card {
+    position: relative;
+    border-radius: var(--rt-radius);
+    background: #fff;
+    box-shadow: var(--rt-shadow);
+}
+
+.rt-card--full {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: center;
+}
+
+.rt-card--reverse .rt-media {
+    order: 2;
+}
+
+.rt-card--half {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- 圖片輪播 ---------- */
+.rt-media {
+    position: relative;
+    padding: 14px;
+}
+
+.rt-swiper {
+    border-radius: calc(var(--rt-radius) - 6px);
+    background: var(--paper-dark);
+}
+
+.rt-card--full .rt-swiper {
+    aspect-ratio: 4 / 3;
+}
+
+.rt-card--half .rt-swiper {
+    aspect-ratio: 3 / 2;
+}
+
+.rt-swiper .swiper-slide {
+    overflow: hidden;
+}
+
+.rt-swiper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all .3s ease;
+}
+
+.rt-media:hover .rt-swiper img {
+    transform: scale(1.03);
+}
+
+.rt-nav {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    display: grid;
+    width: 46px;
+    height: 46px;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(248, 246, 239, .92);
+    color: var(--green-dark);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: all .3s ease;
+}
+
+.rt-nav svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.rt-nav--prev {
+    left: 16px;
+}
+
+.rt-nav--prev svg {
+    transform: scaleX(-1);
+}
+
+.rt-nav--next {
+    right: 16px;
+}
+
+.rt-media:hover .rt-nav,
+.rt-nav:focus-visible {
+    opacity: 1;
+}
+
+.rt-nav:hover {
+    background: #fff;
+    box-shadow: var(--rt-shadow-hover);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.rt-dots {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    bottom: 16px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.rt-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .6);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.rt-dot.is-active {
+    width: 26px;
+    background: #fff;
+}
+
+/* 手繪貼紙風房號 */
+.rt-sticker {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    padding: 6px 16px 5px;
+    border: 1.5px dashed var(--green);
+    border-radius: 14px 18px 12px 16px;
+    background: var(--paper);
+    color: var(--green-dark);
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    transform: rotate(-6deg);
+}
+
+.rt-card--reverse .rt-sticker {
+    right: 0;
+    left: auto;
+    transform: rotate(5deg);
+}
+
+/* ---------- 卡片內文 ---------- */
+.rt-body {
+    padding: 28px 48px 40px;
+}
+
+.rt-card--half .rt-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 14px 34px 34px;
+}
+
+.rt-body .eyebrow {
+    margin-bottom: 8px;
+    font-size: 11px;
+}
+
+.rt-body h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(26px, 2.6vw, 34px);
+    font-weight: 500;
+    letter-spacing: .08em;
+    line-height: 1.4;
+}
+
+.rt-style {
+    display: inline-block;
+    margin: 4px 0 20px;
+    color: var(--green);
+    font-family: var(--serif);
+    font-size: 16px;
+    text-decoration: underline wavy rgba(49, 94, 83, .45);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 7px;
+}
+
+.rt-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+    color: var(--ink);
+}
+
+.rt-icons li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rt-icon {
+    display: inline-grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border-radius: 46% 54% 50% 50% / 52% 46% 54% 48%;
+    background: #eef2ea;
+    color: var(--green);
+}
+
+.rt-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.rt-icons li:hover .rt-icon svg,
+.rt-card--cta:hover .rt-icon--lg svg {
+    animation: rt-wiggle .6s ease;
+}
+
+@keyframes rt-wiggle {
+    0%, 100% { transform: rotate(0) scale(1); }
+    25% { transform: rotate(-12deg) scale(1.12); }
+    50% { transform: rotate(9deg) scale(1.12); }
+    75% { transform: rotate(-5deg) scale(1.05); }
+}
+
+.rt-desc {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 2;
+}
+
+.rt-price {
+    margin: auto 0 22px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.rt-price span {
+    color: var(--ink);
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* ---------- 按鈕 ---------- */
+.rt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.rt-btn {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 24px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.rt-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform .3s ease;
+}
+
+.rt-btn:hover {
+    transform: translateY(-2px);
+}
+
+.rt-btn:hover svg {
+    transform: translateX(3px);
+}
+
+.rt-btn--solid {
+    background: var(--green);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(36, 72, 63, .14);
+}
+
+.rt-btn--solid:hover {
+    background: var(--green-dark);
+    box-shadow: var(--rt-shadow-hover);
+}
+
+.rt-btn--ghost {
+    border-color: var(--green);
+    color: var(--green);
+    background: transparent;
+}
+
+.rt-btn--ghost:hover {
+    background: #eef2ea;
+    box-shadow: var(--rt-shadow);
+}
+
+.rt-btn--light {
+    background: var(--paper);
+    color: var(--green-dark);
+}
+
+.rt-btn--light:hover {
+    background: #fff;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .25);
+}
+
+.rt-btn--outline {
+    border-color: rgba(255, 255, 255, .6);
+    color: #fff;
+}
+
+.rt-btn--outline:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, .1);
+}
+
+.rt-btn:focus-visible,
+.rt-nav:focus-visible,
+.rt-picker a:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+}
+
+/* ---------- 包棟 CTA 卡 ---------- */
+.rt-card--cta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 44px;
+    background: var(--green);
+    color: #fff;
+    overflow: hidden;
+}
+
+.rt-card--cta::after {
+    content: "";
+    position: absolute;
+    right: -60px;
+    bottom: -60px;
+    width: 220px;
+    height: 220px;
+    border: 1.5px dashed rgba(255, 255, 255, .25);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.rt-icon--lg {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 22px;
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+}
+
+.rt-icon--lg svg {
+    width: 34px;
+    height: 34px;
+}
+
+.rt-card--cta h2 {
+    margin: 0 0 14px;
+    font-family: var(--serif);
+    font-size: clamp(26px, 2.6vw, 34px);
+    font-weight: 500;
+    letter-spacing: .08em;
+    line-height: 1.5;
+}
+
+.rt-card--cta > p:not(.eyebrow) {
+    margin: 0 0 28px;
+    color: rgba(255, 255, 255, .82);
+    font-size: 14px;
+    line-height: 2;
+}
+
+/* ---------- 房型詳情 dialog ---------- */
+.rt-locked {
+    overflow: hidden;
+}
+
+.rt-dialog {
+    width: min(760px, calc(100% - 32px));
+    max-height: calc(100vh - 48px);
+    padding: 0;
+    border: 0;
+    border-radius: var(--rt-radius);
+    background: transparent;
+    color: var(--ink);
+    overflow: visible;
+}
+
+.rt-dialog::backdrop {
+    background: rgba(32, 31, 25, .55);
+    backdrop-filter: blur(3px);
+}
+
+.rt-dialog-panel {
+    position: relative;
+    max-height: calc(100vh - 48px);
+    padding: 44px 48px 40px;
+    border-radius: var(--rt-radius);
+    background: var(--paper);
+    overflow-y: auto;
+}
+
+.rt-dialog-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.rt-dialog-close:hover {
+    background: var(--paper-dark);
+    transform: rotate(90deg);
+}
+
+.rt-dialog-panel > .eyebrow {
+    margin-bottom: 6px;
+}
+
+.rt-dialog-panel h2 {
+    margin: 0 0 26px;
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: .06em;
+}
+
+.rt-dialog-panel h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 14px;
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.rt-dialog-panel h3::after {
+    content: "";
+    flex: 1;
+    border-top: 1px dashed var(--line);
+}
+
+.rt-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 16px;
+}
+
+.rt-table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+}
+
+.rt-table th,
+.rt-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+}
+
+.rt-table thead th {
+    background: var(--green);
+    color: #fff;
+    font-weight: 500;
+}
+
+.rt-table thead th:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+.rt-table thead th:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.rt-table tbody th {
+    font-weight: 500;
+    text-align: left;
+}
+
+.rt-notes {
+    margin: 0 0 30px;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.rt-notes li {
+    position: relative;
+    padding-left: 1.3em;
+}
+
+.rt-notes li::before {
+    content: "※";
+    position: absolute;
+    left: 0;
+}
+
+.rt-facilities {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+}
+
+.rt-facilities li {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: #fff;
+    text-align: center;
+}
+
+.rt-facility-note {
+    margin: 0 0 28px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* ---------- 響應式 ---------- */
+.rt-br {
+    display: none;
+}
+
+@media (max-width: 1080px) {
+    .rt-card--full {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rt-card--reverse .rt-media {
+        order: 0;
+    }
+
+    .rt-card--reverse .rt-sticker {
+        right: auto;
+        left: 0;
+        transform: rotate(-6deg);
+    }
+
+    .rt-card--full .rt-swiper {
+        aspect-ratio: 16 / 10;
+    }
+
+    .rt-body {
+        padding: 14px 34px 34px;
+    }
+}
+
+@media (max-width: 900px) {
+    .rt-list {
+        width: calc(100% - 56px);
+        gap: 40px;
+    }
+
+    .rt-row--pair {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 40px;
+    }
+
+    /* 觸控裝置沒有 hover，箭頭常駐 */
+    .rt-nav {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .rt-intro {
+        width: calc(100% - 32px);
+        padding: 48px 0 44px;
+    }
+
+    .rt-intro-lead {
+        font-size: 14px;
+    }
+
+    .rt-br {
+        display: initial;
+    }
+
+    .rt-picker a {
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+
+    .rt-list {
+        width: calc(100% - 32px);
+        gap: 32px;
+    }
+
+    .rt-row--pair {
+        gap: 32px;
+    }
+
+    .rt-media {
+        padding: 10px;
+    }
+
+    .rt-card--full .rt-swiper,
+    .rt-card--half .rt-swiper {
+        aspect-ratio: 4 / 3;
+    }
+
+    .rt-nav {
+        width: 38px;
+        height: 38px;
+    }
+
+    .rt-body,
+    .rt-card--half .rt-body {
+        padding: 12px 20px 26px;
+    }
+
+    .rt-card--cta {
+        padding: 36px 24px;
+    }
+
+    .rt-actions .rt-btn {
+        flex: 1 1 auto;
+    }
+
+    .rt-dialog-panel {
+        padding: 40px 20px 28px;
+    }
+
+    .rt-dialog-panel h2 {
+        font-size: 23px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rt-icons li:hover .rt-icon svg,
+    .rt-card--cta:hover .rt-icon--lg svg {
+        animation: none;
+    }
+}

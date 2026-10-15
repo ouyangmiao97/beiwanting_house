@@ -25,7 +25,8 @@
             </a>
             <nav class="main-nav" aria-label="主要導覽">
                 <a href="#about">認識北灣町</a>
-                <a href="#rooms">空間與房型</a>
+                <a href="/room">空間與房型</a>
+                <a href="/notice">訂房須知</a>
                 <a class="nav-booking" href="#contact">預約包棟 <span aria-hidden="true">↗</span></a>
             </nav>
         </div>
