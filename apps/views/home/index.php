@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="來宜蘭頭城北灣町，享受自在包棟、舒服客房與海邊慢遊時光。">
     <meta name="theme-color" content="#f8f6ef">
+    <meta name="google-site-verification" content="6Aqzk7zHmIcri7MNvCiYy8Lf_U5wJ5UDfBjyiANgxcU" />
     <title>北灣町・慢旅小宿｜宜蘭頭城</title>
     <link rel="stylesheet" href="/css/slow-stay.css">
 </head>
